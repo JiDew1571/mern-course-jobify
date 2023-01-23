@@ -8,8 +8,13 @@ import errorHandlerMiddleware from './middleware/error-handler.js';
 import connectDB from './db/connect.js';
 import authRouter from './routes/authRoutes.js';
 import jobsRouter from './routes/jobsRoutes.js';
+import morgan from 'morgan';
 
 dotenv.config();
+
+if (process.env.NODE_ENV !== 'production') {
+	app.use(morgan('dev'));
+}
 
 app.use(express.json());
 
@@ -21,6 +26,7 @@ app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || 5000;
 const uri = process.env.MONGODB_URI;
+
 const start = async () => {
 	try {
 		await connectDB(uri);
