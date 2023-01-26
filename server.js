@@ -33,15 +33,18 @@ const start = async () => {
 		app.listen(port, () => {
 			console.log(`Server is listening on  http://localhost:${port}`);
 			console.log('');
-			console.table('available routes:');
+			console.log('available routes:');
 			console.log('1.', `http://localhost:${port}/api/v1/auth/`.bgMagenta);
+			console.log('2.', `http://localhost:${port}/api/v1/jobs/`.bgCyan);
 
-			console.table('auth routes:');
+			console.group('auth routes:');
 			console.log(`http://localhost:${port}/api/v1/auth/register/`.bgMagenta);
 			console.log(`http://localhost:${port}/api/v1/auth/login/`.bgMagenta);
 			console.log(`http://localhost:${port}/api/v1/auth/updateUser/`.bgMagenta);
+			console.groupEnd();
 			console.log('');
-			console.log('2.', `http://localhost:${port}/api/v1/jobs/`.bgCyan);
+			console.group('jobs routes:');
+			console.log(`http://localhost:${port}/api/v1/jobs/`.bgCyan);
 		});
 	} catch (error) {
 		console.log(error);
