@@ -1,6 +1,7 @@
 import main from '../assets/images/Dev.svg';
 import Wrapper from '../assets/wrappers/LandingPage';
 import { Logo } from '../components';
+import { Link } from 'react-router-dom';
 
 const Landing = () => {
 	return (
@@ -18,11 +19,9 @@ const Landing = () => {
 						A simple job tracking app build by Jitendra Seervi by learning from the
 						course of John Smilga from udemy
 					</p>
-					<button className='btn btn-hero'>
-						<a target='_parent' href='/register'>
-							Login/Register
-						</a>
-					</button>
+					<Link to='/register' className='btn btn-hero'>
+						Login/Register
+					</Link>
 				</div>
 				<img src={main} alt='job hunt' className='img main-img' />
 			</div>
