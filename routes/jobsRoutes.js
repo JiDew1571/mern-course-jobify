@@ -6,7 +6,7 @@ import {
 	getAllJobs,
 	updateJob,
 	showStats,
-} from '../controllers/jobController.js';
+} from '../controllers/jobsController.js';
 import authenticateUser from '../middleware/auth.js';
 
 router

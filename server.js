@@ -38,13 +38,39 @@ const start = async () => {
 			console.log('2.', `http://localhost:${port}/api/v1/jobs/`.bgCyan);
 
 			console.group('auth routes:');
-			console.log(`http://localhost:${port}/api/v1/auth/register/`.bgMagenta);
-			console.log(`http://localhost:${port}/api/v1/auth/login/`.bgMagenta);
-			console.log(`http://localhost:${port}/api/v1/auth/updateUser/`.bgMagenta);
+			console.log(
+				`http://localhost:${port}/api/v1/auth/register/`.bgMagenta,
+				'type: ' + 'post'.yellow
+			);
+			console.log(
+				`http://localhost:${port}/api/v1/auth/login/`.bgMagenta,
+				'type: ' + 'post'.yellow
+			);
+			console.log(
+				`http://localhost:${port}/api/v1/auth/updateUser/`.bgMagenta,
+				'type: ' + 'patch'.gray
+			);
 			console.groupEnd();
 			console.log('');
 			console.group('jobs routes:');
-			console.log(`http://localhost:${port}/api/v1/jobs/`.bgCyan);
+			console.log(
+				`http://localhost:${port}/api/v1/jobs/`.bgCyan,
+				'type(2): ' + 'post'.yellow,
+				',',
+				'get'.green
+			);
+			console.log(
+				`http://localhost:${port}/api/v1/jobs/stats`.bgCyan,
+				'type: ' + 'get'.green
+			);
+			console.log(
+				`http://localhost:${port}/api/v1/jobs/:id`.bgCyan,
+				'type(2): ' + 'delete'.red,
+				',',
+				'patch'.grey
+			);
+			console.groupEnd();
+			console.log('');
 		});
 	} catch (error) {
 		console.log(error);
