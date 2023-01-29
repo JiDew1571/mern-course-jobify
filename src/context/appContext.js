@@ -1,5 +1,6 @@
 import React, { useReducer, useContext } from 'react';
 import axios from 'axios';
+
 import {
 	CLEAR_ALERT,
 	USER_ALERT,
@@ -12,6 +13,13 @@ import {
 	UPDATE_USER_BEGIN,
 	UPDATE_USER_SUCCESS,
 	UPDATE_USER_ERROR,
+	HANDLE_CHANGE,
+	CLEAR_VALUES,
+	CREATE_JOB_BEGIN,
+	CREATE_JOB_SUCCESS,
+	CREATE_JOB_ERROR,
+	GET_JOBS_BEGIN,
+	GET_JOBS_SUCCESS,
 } from './actions';
 import reducer from './reducer';
 
@@ -28,8 +36,20 @@ const initialState = {
 	user: user ? JSON.parse(user) : null,
 	token: token || null,
 	userLocation: userLocation || '',
-	jobLocation: userLocation || '',
 	showSidebar: false,
+	isEditing: false,
+	editJobId: '',
+	position: '',
+	company: '',
+	jobLocation: userLocation || '',
+	jobTypeOptions: ['full-time', 'part-time', 'remote', 'internship'],
+	jobType: 'full-time',
+	statusOptions: ['interview', 'declined', 'pending'],
+	status: 'pending',
+	jobs: [],
+	totalJobs: 0,
+	numOfPages: 1,
+	page: 1,
 };
 
 const AppContext = React.createContext();
@@ -160,6 +180,60 @@ const AppProvider = ({ children }) => {
 	const toggleSidebar = () => {
 		dispatch({ type: TOGGLE_SIDEBAR });
 	};
+
+	// handle change
+	const handleChange = ({ name, value }) => {
+		dispatch({ type: HANDLE_CHANGE, payload: { name, value } });
+	};
+
+	// clear values
+	const clearValues = () => {
+		dispatch({ type: CLEAR_VALUES });
+	};
+
+	// create job
+	const createJob = async () => {
+		dispatch({ type: CREATE_JOB_BEGIN });
+
+		try {
+			const { position, company, jobLocation, jobType, status } = state;
+
+			await authFetch.post('/jobs', {
+				position,
+				company,
+				jobLocation,
+				jobType,
+				status,
+			});
+
+			dispatch({ type: CREATE_JOB_SUCCESS });
+			dispatch({ type: CLEAR_VALUES });
+		} catch (error) {
+			if (error.response.status === 401) return;
+			dispatch({
+				type: CREATE_JOB_ERROR,
+				payload: { msg: error.response.data.msg },
+			});
+		}
+		clearAlert();
+	};
+
+	// get all jobs
+	const getJobs = async () => {
+		let url = `/jobs`;
+
+		dispatch({ type: GET_JOBS_BEGIN });
+		try {
+			const { data } = await authFetch.get(url);
+			const { jobs, totalJobs, numOfPages } = data;
+			dispatch({ type: GET_JOBS_SUCCESS, payload: { jobs, totalJobs, numOfPages } });
+		} catch (error) {
+			console.log(error.response);
+			logoutUser();
+		}
+		clearAlert();
+	};
+
 	return (
 		<AppContext.Provider
 			value={{
@@ -170,6 +244,10 @@ const AppProvider = ({ children }) => {
 				logoutUser,
 				updateUser,
 				toggleSidebar,
+				handleChange,
+				clearValues,
+				createJob,
+				getJobs,
 			}}>
 			{children}
 		</AppContext.Provider>
