@@ -1,4 +1,23 @@
+import { useEffect } from 'react';
+import { useAppContext } from '../../context/appContext';
+import { StatsContainer, Loading, ChartsContainer } from '../../components';
+
 const Stats = () => {
-	return <div>Stats</div>;
+	const { showStats, isLoading, monthlyApplications } = useAppContext();
+	useEffect(() => {
+		showStats();
+	}, []);
+
+	if (isLoading) {
+		return <Loading center text={'Loading Statistics...'} />;
+	}
+
+	return (
+		<>
+			<StatsContainer />
+			{monthlyApplications.length > 0 && <ChartsContainer />}
+		</>
+	);
 };
+
 export default Stats;

@@ -12,7 +12,7 @@ const JobsContainer = () => {
 	}, []);
 
 	if (isLoading) {
-		return <Loading center />;
+		return <Loading center text={'Fetching Jobs....'} />;
 	}
 
 	if (jobs.length === 0) {
