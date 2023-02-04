@@ -44,7 +44,7 @@ const login = async (req, res) => {
 	if (!user) {
 		throw new UnauthenticatedError("Invalid credentials or user doesn't exits");
 	}
-	console.log(user);
+	// console.log(user); // will print user with hashed password
 
 	const isPasswordCorrect = await user.comparePassword(password); // compare password
 	if (!isPasswordCorrect) {
